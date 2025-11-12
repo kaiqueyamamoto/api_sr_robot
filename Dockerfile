@@ -1,10 +1,7 @@
 # Build stage
-FROM golang:1.23-alpine AS builder
+FROM golang:1.24-bookworm AS builder
 
 WORKDIR /app
-
-# Install dependencies
-RUN apk add --no-cache git
 
 # Copy go mod files
 COPY go.mod go.sum ./
@@ -13,10 +10,16 @@ RUN go mod download
 # Copy source code
 COPY . .
 
+# Install swag CLI to generate docs
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+
+# Generate Swagger documentation
+RUN swag init
+
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
-# Final stage
+# Production stage
 FROM alpine:latest
 
 RUN apk --no-cache add ca-certificates
@@ -31,4 +34,3 @@ EXPOSE 8080
 
 # Run the application
 CMD ["./main"]
-

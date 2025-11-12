@@ -2,47 +2,43 @@
 .git
 .gitignore
 
-# Environment
-.env
-.env.*
-
-# IDE
+# Dev environment
+.devcontainer
+.cursor
 .vscode
 .idea
-*.swp
-*.swo
 
-# Build artifacts
-chatserver
+# Dependencies
+node_modules
+vendor
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Build outputs
 *.exe
+*.exe~
 *.dll
 *.so
 *.dylib
-
-# Test
 *.test
 *.out
+main
 
-# Dependencies
-vendor/
+# Documentation
+*.md
+README.md
+docs/
 
-# Logs
-*.log
-/tmp/
+# CI/CD
+.github
+.gitlab-ci.yml
 
-# OS
+# Misc
 .DS_Store
 Thumbs.db
-
-# Documentation (já serão gerados no build)
-# docs/
-
-# Metrics data
-prometheus-data/
-grafana-data/
-
-# Temporary files
-*.tmp
-*.bak
-*~
-
+*.log
+tmp/
+temp/
