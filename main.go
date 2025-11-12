@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"os"
 
 	"chatserver/controllers"
@@ -81,6 +82,11 @@ func main() {
 		}
 
 		c.Next()
+	})
+
+	// Redirect root to Swagger
+	router.GET("/", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "/swagger/index.html")
 	})
 
 	// Swagger documentation

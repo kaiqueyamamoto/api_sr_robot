@@ -1,0 +1,11 @@
+# Nixpacks build configuration
+# This file tells Nixpacks to use Go
+
+providers = ["go"]
+
+[build]
+cmd = "go build -o chatserver main.go"
+
+[start]
+cmd = "./chatserver"
+

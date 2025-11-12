@@ -7,31 +7,37 @@
 ✅ Documentação Swagger/OpenAPI interativa  
 ✅ Métricas Prometheus  
 ✅ Gestão completa de conversas  
-✅ Documentação abrangente  
+✅ Documentação abrangente
 
 ## 🆕 Arquivos Criados
 
 ### Controllers
+
 - `controllers/auth.go` - Autenticação (register/login)
 - `controllers/chat_controller.go` - Chat e conversas
 
 ### Models
+
 - `models/user.go` - Modelo de usuário
 - `models/claims.go` - JWT claims
 - `models/conversation.go` - Modelo de conversa
 - `models/message.go` - Modelo de mensagem
 
 ### Middleware
+
 - `middleware/auth.go` - Validação JWT
 - `middleware/metrics.go` - Métricas HTTP
 
 ### Metrics
+
 - `metrics/prometheus.go` - Definições de métricas
 
 ### Database
+
 - `database/mongodb.go` - Conexão MongoDB
 
 ### Documentação
+
 - `docs/` - Swagger gerado (docs.go, swagger.json, swagger.yaml)
 - `API_EXAMPLES.md` - Exemplos de uso da API
 - `SWAGGER.md` - Guia completo do Swagger
@@ -43,6 +49,7 @@
 - `COMMIT_MESSAGE.md` - Mensagens de commit sugeridas
 
 ### Configuration
+
 - `prometheus.yml` - Config Prometheus
 - `docker-compose.metrics.yml` - Stack de monitoramento
 - `grafana/provisioning/` - Auto-config Grafana
@@ -50,15 +57,18 @@
 - `start.sh` - Script de inicialização
 
 ### Testing
+
 - `request.http` - Requisições REST Client
 - `test_api.sh` - Script de testes
 
 ## 🔧 Arquivos Modificados
 
 ### Main
+
 - `main.go` - Rotas, Swagger, CORS, Auth
 
 ### Go Modules
+
 - `go.mod` - Dependências atualizadas
 - `go.sum` - Checksums
 
@@ -92,10 +102,12 @@ github.com/joho/godotenv v1.5.1
 ## 🌐 Endpoints Criados
 
 ### Auth
+
 - `POST /auth/register` - Registrar usuário
 - `POST /auth/login` - Login (token 24h)
 
 ### Chat
+
 - `POST /api/v1/chat` - Enviar mensagem
 - `GET /api/v1/conversations` - Listar conversas
 - `GET /api/v1/conversations/:id` - Ver histórico
@@ -103,6 +115,7 @@ github.com/joho/godotenv v1.5.1
 - `DELETE /api/v1/conversations/:id` - Deletar conversa
 
 ### System
+
 - `GET /health` - Health check
 - `GET /metrics` - Métricas Prometheus
 - `GET /swagger/index.html` - Documentação Swagger
@@ -118,20 +131,24 @@ github.com/joho/godotenv v1.5.1
 ## 📊 Métricas Implementadas
 
 ### HTTP
+
 - Request rate
 - Request duration
 - Status codes
 
 ### Auth
+
 - Login/register attempts
 - Token issuance
 - Validation failures
 
 ### Database
+
 - Operations count
 - Query duration
 
 ### Chat
+
 - Messages count
 - Active connections
 
@@ -147,12 +164,14 @@ github.com/joho/godotenv v1.5.1
 ## 📝 Documentação
 
 ### Swagger
+
 - Todas as rotas documentadas
 - Modelos de dados visíveis
 - Exemplos interativos
 - Try it out funcional
 
 ### Markdown
+
 - Guias de uso
 - Exemplos cURL
 - Troubleshooting
@@ -161,14 +180,17 @@ github.com/joho/godotenv v1.5.1
 ## 🎨 Features Destacadas
 
 ### 1. Swagger Interativo
+
 ```
 http://localhost:8080/swagger/index.html
 ```
+
 - Teste endpoints no navegador
 - Veja modelos de dados
 - Exportável para Postman
 
 ### 2. Autenticação JWT
+
 ```json
 {
   "token": "eyJhbGci...",
@@ -179,12 +201,14 @@ http://localhost:8080/swagger/index.html
 ```
 
 ### 3. Chat com Contexto
+
 - Cria conversas automaticamente
 - Mantém histórico
 - Integração N8N
 - Latência rastreada
 
 ### 4. Métricas Prometheus
+
 - Monitoramento completo
 - Dashboards Grafana
 - Alertas configuráveis
@@ -192,6 +216,7 @@ http://localhost:8080/swagger/index.html
 ## 🚀 Como Usar
 
 ### Iniciar Servidor
+
 ```bash
 ./start.sh
 # ou
@@ -199,6 +224,7 @@ http://localhost:8080/swagger/index.html
 ```
 
 ### Testar API
+
 ```bash
 # Via Swagger
 http://localhost:8080/swagger/index.html
@@ -210,6 +236,7 @@ curl -X POST http://localhost:8080/api/v1/chat \
 ```
 
 ### Ver Métricas
+
 ```bash
 curl http://localhost:8080/metrics
 ```
@@ -278,4 +305,3 @@ O sistema está funcional, documentado e monitorado.
 **Data**: 2025-11-12  
 **Versão**: 1.0.0  
 **Status**: ✅ Completo
-

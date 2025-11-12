@@ -54,6 +54,7 @@ Migration Required: None
 ## Commit Convencional (Conventional Commits)
 
 ### Formato Resumido
+
 ```bash
 git commit -m "feat: add Swagger docs and complete chat API" \
            -m "- Add interactive Swagger UI at /swagger/index.html" \
@@ -66,6 +67,7 @@ git commit -m "feat: add Swagger docs and complete chat API" \
 ```
 
 ### Formato Detalhado (Recomendado)
+
 ```bash
 git commit -m "feat: add Swagger documentation and complete chat API integration
 
@@ -98,6 +100,7 @@ Documentation:
 ## Comandos Git
 
 ### Verificar Mudanças
+
 ```bash
 git status
 git diff
@@ -105,6 +108,7 @@ git log --oneline -5
 ```
 
 ### Adicionar e Commitar
+
 ```bash
 # Adicionar todos os arquivos
 git add .
@@ -121,6 +125,7 @@ git commit
 ```
 
 ### Push
+
 ```bash
 # Push para branch main
 git push origin main
@@ -132,17 +137,17 @@ git push origin feature/swagger-chat-api
 
 ## Tipos de Commit (Conventional Commits)
 
-| Tipo | Descrição | Exemplo |
-|------|-----------|---------|
-| `feat` | Nova funcionalidade | feat: add user authentication |
-| `fix` | Correção de bug | fix: correct N8N response parsing |
-| `docs` | Documentação | docs: add API examples |
-| `style` | Formatação | style: format code with gofmt |
-| `refactor` | Refatoração | refactor: improve error handling |
-| `perf` | Performance | perf: optimize database queries |
-| `test` | Testes | test: add chat controller tests |
-| `chore` | Manutenção | chore: update dependencies |
-| `ci` | CI/CD | ci: add GitHub Actions |
+| Tipo       | Descrição           | Exemplo                           |
+| ---------- | ------------------- | --------------------------------- |
+| `feat`     | Nova funcionalidade | feat: add user authentication     |
+| `fix`      | Correção de bug     | fix: correct N8N response parsing |
+| `docs`     | Documentação        | docs: add API examples            |
+| `style`    | Formatação          | style: format code with gofmt     |
+| `refactor` | Refatoração         | refactor: improve error handling  |
+| `perf`     | Performance         | perf: optimize database queries   |
+| `test`     | Testes              | test: add chat controller tests   |
+| `chore`    | Manutenção          | chore: update dependencies        |
+| `ci`       | CI/CD               | ci: add GitHub Actions            |
 
 ## Exemplo Completo
 
@@ -184,4 +189,3 @@ git push origin main
 
 **Arquivo gerado em:** 2025-11-12
 **Status:** Pronto para commit
-
