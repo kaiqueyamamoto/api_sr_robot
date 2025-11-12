@@ -1,0 +1,43 @@
+# Binaries
+chatserver
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+
+# Prometheus data
+prometheus-data/
+
+# Grafana data
+grafana-data/
+grafana/provisioning/dashboards/*.json
+
+# Logs
+*.log
+

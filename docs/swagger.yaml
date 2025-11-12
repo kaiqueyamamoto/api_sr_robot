@@ -1,0 +1,477 @@
+basePath: /
+definitions:
+  controllers.ChatRequest:
+    properties:
+      conversationId:
+        description: 'Opcional: se não fornecido, cria nova conversa'
+        type: string
+      message:
+        type: string
+    required:
+    - message
+    type: object
+  controllers.ChatResponse:
+    properties:
+      conversationId:
+        type: string
+      latencyMs:
+        type: integer
+      message:
+        description: Resposta do assistente
+        type: string
+      messageId:
+        type: string
+      role:
+        $ref: '#/definitions/models.MessageRole'
+    type: object
+  models.AuthResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      token:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.Conversation:
+    properties:
+      createdAt:
+        type: string
+      id:
+        type: string
+      title:
+        description: Título da conversa (pode ser gerado automaticamente)
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        description: 'Opcional: para usuários autenticados'
+        type: string
+    type: object
+  models.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.MessageRole:
+    enum:
+    - user
+    - assistant
+    - system
+    type: string
+    x-enum-varnames:
+    - RoleUser
+    - RoleAssistant
+    - RoleSystem
+  models.ProfileResponse:
+    properties:
+      bio:
+        type: string
+      email:
+        type: string
+      name:
+        type: string
+    type: object
+  models.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  models.UpdateProfileRequest:
+    properties:
+      bio:
+        type: string
+      name:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+  description: API para chatbot SR Robot com JWT authentication e Prometheus metrics
+  license:
+    name: MIT
+    url: http://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: SR Robot API
+  version: "1.0"
+paths:
+  /api/v1/chat:
+    post:
+      consumes:
+      - application/json
+      description: Envia uma mensagem e recebe a resposta do chatbot. Cria nova conversa
+        ou continua existente.
+      parameters:
+      - description: Mensagem do usuário
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controllers.ChatRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.ChatResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Enviar mensagem para o chatbot
+      tags:
+      - chat
+  /api/v1/conversations:
+    get:
+      consumes:
+      - application/json
+      description: Lista todas as conversas ordenadas por data de atualização
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Listar conversas
+      tags:
+      - chat
+  /api/v1/conversations/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deleta uma conversa e todas suas mensagens
+      parameters:
+      - description: Conversation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Deletar conversa
+      tags:
+      - chat
+    get:
+      consumes:
+      - application/json
+      description: Retorna todas as mensagens de uma conversa específica
+      parameters:
+      - description: Conversation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Obter histórico de conversa
+      tags:
+      - chat
+    put:
+      consumes:
+      - application/json
+      description: Atualiza o título de uma conversa existente
+      parameters:
+      - description: Conversation ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Novo título
+        in: body
+        name: request
+        required: true
+        schema:
+          additionalProperties:
+            type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Conversation'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Atualizar título da conversa
+      tags:
+      - chat
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Autentica um usuário e retorna token JWT (válido por 24 horas)
+      parameters:
+      - description: Credenciais de login
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Login de usuário
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Cria um novo usuário com email e senha
+      parameters:
+      - description: Dados de registro
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.AuthResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Registrar novo usuário
+      tags:
+      - auth
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: Verifica se o servidor está rodando
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Health Check
+      tags:
+      - health
+  /profile:
+    get:
+      consumes:
+      - application/json
+      description: Retorna as informações de perfil do usuário autenticado (nome,
+        bio, email)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProfileResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Obter perfil do usuário
+      tags:
+      - profile
+    put:
+      consumes:
+      - application/json
+      description: Atualiza nome e bio do usuário autenticado (email não pode ser
+        alterado)
+      parameters:
+      - description: Dados do perfil
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateProfileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Atualizar perfil do usuário
+      tags:
+      - profile
+securityDefinitions:
+  BearerAuth:
+    description: Bearer token (add "Bearer " prefix)
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

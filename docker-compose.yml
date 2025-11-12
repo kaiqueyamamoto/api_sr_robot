@@ -1,0 +1,17 @@
+# Docker Compose for SR Robot API
+# Este arquivo é opcional - a API Go roda no Dev Container
+# Use apenas se precisar de serviços adicionais localmente
+
+version: '3.8'
+
+# Caso precise adicionar serviços locais no futuro, adicione aqui
+# Exemplo: Redis, Elasticsearch, etc.
+
+# services:
+#   redis:
+#     image: redis:7-alpine
+#     ports:
+#       - "6379:6379"
+
+# volumes:
+# networks:

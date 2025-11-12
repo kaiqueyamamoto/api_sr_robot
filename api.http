@@ -1,0 +1,85 @@
+### SR Robot API - Testes
+### Use a extensão REST Client do VS Code
+
+@baseUrl = http://localhost:8080
+@apiUrl = {{baseUrl}}/api/v1
+
+### Variables (atualize após criar uma conversa)
+@conversationId = YOUR_CONVERSATION_ID_HERE
+
+###
+### Health Check
+GET {{baseUrl}}/health
+
+###
+### 1. Criar nova conversa (primeira mensagem)
+POST {{apiUrl}}/chat
+Content-Type: application/json
+
+{
+  "message": "Olá! Quanto tempo de experiência você tem com Node.js?"
+}
+
+###
+### 2. Continuar conversa existente
+POST {{apiUrl}}/chat
+Content-Type: application/json
+
+{
+  "conversationId": "{{conversationId}}",
+  "message": "E com Go/Golang?"
+}
+
+###
+### 3. Outra mensagem na mesma conversa
+POST {{apiUrl}}/chat
+Content-Type: application/json
+
+{
+  "conversationId": "{{conversationId}}",
+  "message": "Quais são seus principais projetos?"
+}
+
+###
+### 4. Buscar histórico de uma conversa
+GET {{apiUrl}}/conversations/{{conversationId}}
+
+###
+### 5. Listar todas as conversas
+GET {{apiUrl}}/conversations
+
+###
+### Exemplos de perguntas para o chatbot
+
+### Pergunta sobre experiência
+POST {{apiUrl}}/chat
+Content-Type: application/json
+
+{
+  "message": "Quanto tempo de experiência tenho com nodejs?"
+}
+
+### Pergunta sobre habilidades
+POST {{apiUrl}}/chat
+Content-Type: application/json
+
+{
+  "message": "Quais são minhas principais habilidades técnicas?"
+}
+
+### Pergunta sobre projetos
+POST {{apiUrl}}/chat
+Content-Type: application/json
+
+{
+  "message": "Me conte sobre meus projetos mais recentes"
+}
+
+### Pergunta sobre educação
+POST {{apiUrl}}/chat
+Content-Type: application/json
+
+{
+  "message": "Qual é minha formação acadêmica?"
+}
+

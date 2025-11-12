@@ -1,0 +1,116 @@
+# Chat Server API - Test Requests
+# Use with REST Client extension in VS Code or IntelliJ
+# 📖 Swagger Documentation: http://localhost:8080/swagger/index.html
+
+### Health Check
+GET http://localhost:8080/health
+
+###
+
+### Swagger Documentation
+GET http://localhost:8080/swagger/index.html
+
+###
+
+### Prometheus Metrics
+GET http://localhost:8080/metrics
+
+###
+
+### ========================================
+### AUTH ENDPOINTS
+### ========================================
+
+### Register New User
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "test123456"
+}
+
+> {%
+  client.global.set("token", response.body.token);
+  client.global.set("user_id", response.body.user_id);
+  client.global.set("email", response.body.email);
+%}
+
+###
+
+### Login
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "test123456"
+}
+
+> {%
+  client.global.set("token", response.body.token);
+  client.global.set("user_id", response.body.user_id);
+  client.global.set("email", response.body.email);
+%}
+
+###
+
+### ========================================
+### CHAT ENDPOINTS
+### ========================================
+
+### Send Message (New Conversation)
+POST http://localhost:8080/api/v1/chat
+Content-Type: application/json
+
+{
+    "message": "Qual é o meu nome?"
+}
+
+> {%
+  client.global.set("conversationId", response.body.conversationId);
+%}
+
+###
+
+### Send Message (Continue Conversation)
+POST http://localhost:8080/api/v1/chat
+Content-Type: application/json
+
+{
+    "conversationId": "{{conversationId}}",
+    "message": "E onde eu trabalho?"
+}
+
+###
+
+### Get Conversation History
+GET http://localhost:8080/api/v1/conversations/{{conversationId}}
+
+###
+
+### List All Conversations
+GET http://localhost:8080/api/v1/conversations
+
+###
+
+### Test Invalid Token (Should Fail)
+GET http://localhost:8080/userinfo
+Authorization: Bearer invalid-token-here
+
+###
+
+### Test Missing Authorization Header (Should Fail)
+POST http://localhost:8080/chat
+Content-Type: application/json
+
+{}
+
+
+### Post N8N
+POST https://galaxy.conecta-tech.com.br/webhook/conversation
+Content-Type: application/json
+
+{
+    "message": "quanto tempo de experiência tenho com nodejs?"
+}
