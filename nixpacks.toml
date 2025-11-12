@@ -2,7 +2,7 @@
 # https://nixpacks.com/docs/configuration
 
 [phases.setup]
-nixPkgs = ["go_1_24", "nodejs", "git"]
+nixPkgs = ["go_1_24"]
 
 [phases.install]
 cmds = [
@@ -12,7 +12,7 @@ cmds = [
 
 [phases.build]
 cmds = [
-  "swag init -g main.go --output ./docs",
+  "$GOPATH/bin/swag init -g main.go --output ./docs",
   "go build -o chatserver main.go"
 ]
 
