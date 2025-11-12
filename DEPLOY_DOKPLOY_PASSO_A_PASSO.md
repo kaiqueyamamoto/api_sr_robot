@@ -1,6 +1,7 @@
 # 🚀 DEPLOY DOKPLOY - PASSO A PASSO COMPLETO
 
 ## ❌ Erro Atual:
+
 ```
 Error: Writing app
 Caused by: Is a directory (os error 21)
@@ -17,6 +18,7 @@ Caused by: Is a directory (os error 21)
 ### ✅ Etapa 1: Verificar que o código foi enviado
 
 Você já fez isso! ✅ O Dokploy clonou com sucesso:
+
 ```
 Cloned github.com/kaiqueyamamoto/api_sr_robot.git: ✅
 ```
@@ -28,11 +30,13 @@ Cloned github.com/kaiqueyamamoto/api_sr_robot.git: ✅
 **ESTE É O PASSO CRUCIAL!**
 
 #### 2.1. Acesse o Dokploy Dashboard
+
 ```
 https://seu-dokploy.com/dashboard
 ```
 
 #### 2.2. Localize seu Aplicativo
+
 - Nome: **srrobot-api-ejhf6d** (ou similar)
 - Status: ❌ Build Failed
 
@@ -61,6 +65,7 @@ Na seção **"Build Configuration"**:
 ```
 
 **Passos exatos:**
+
 1. Click no dropdown **"Builder"**
 2. Selecione **"Dockerfile"**
 3. No campo **"Dockerfile Path"**, digite: `Dockerfile.dokploy`
@@ -105,6 +110,7 @@ Valor: seu_secret_super_seguro_aqui_123456
 
 1. **Volte para a página principal do app**
 2. **Click no botão "Redeploy"** ou **"Rebuild"**
+
    - Pode estar no canto superior direito
    - Ou no menu de ações
 
@@ -128,6 +134,7 @@ Valor: seu_secret_super_seguro_aqui_123456
 ```
 
 **Nos logs você verá:**
+
 ```
 ✅ Conectado ao MongoDB Atlas!
 🚀 Servidor rodando na porta 8080
@@ -141,6 +148,7 @@ Valor: seu_secret_super_seguro_aqui_123456
 ### 5.1. Obter a URL do App
 
 No Dokploy, você verá algo como:
+
 ```
 https://srrobot-api-ejhf6d.your-domain.com
 ```
@@ -148,11 +156,13 @@ https://srrobot-api-ejhf6d.your-domain.com
 ### 5.2. Testar Endpoints
 
 #### Health Check:
+
 ```bash
 curl https://sua-url.com/health
 ```
 
 **Resposta esperada:**
+
 ```json
 {
   "status": "ok",
@@ -161,16 +171,19 @@ curl https://sua-url.com/health
 ```
 
 #### Swagger UI:
+
 ```
 https://sua-url.com/
 ```
 
 Deve redirecionar automaticamente para:
+
 ```
 https://sua-url.com/swagger/index.html
 ```
 
 #### Test Chat:
+
 ```bash
 curl -X POST https://sua-url.com/api/v1/chat \
   -H "Content-Type: application/json" \
@@ -226,6 +239,7 @@ Dokploy Dashboard
 ### Se ainda der erro:
 
 #### Opção A: Verificar Dockerfile
+
 ```bash
 # Certifique-se que o arquivo existe:
 ls -la Dockerfile.dokploy
@@ -242,6 +256,7 @@ Se por algum motivo o Dockerfile não funcionar:
 3. **Configure manualmente no Dokploy:**
 
 **Build Command:**
+
 ```bash
 go mod download && \
 go install github.com/swaggo/swag/cmd/swag@latest && \
@@ -250,6 +265,7 @@ go build -o chatserver main.go
 ```
 
 **Start Command:**
+
 ```bash
 ./chatserver
 ```
@@ -263,6 +279,7 @@ go build -o chatserver main.go
 ### Logs do Dokploy
 
 Para ver logs detalhados:
+
 1. No app, click em **"Logs"** ou **"Build Logs"**
 2. Procure por linhas com ❌ ou "Error"
 3. Se ver "Connected to MongoDB" = ✅ sucesso!
@@ -270,11 +287,13 @@ Para ver logs detalhados:
 ### Variáveis de Ambiente
 
 Verifique se todas estão configuradas:
+
 ```
 Settings → Environment → [Lista de variáveis]
 ```
 
 Deve ter **7 variáveis** no mínimo:
+
 - MONGODB_URL
 - MONGODB_DATABASE
 - PORT
@@ -288,18 +307,23 @@ Deve ter **7 variáveis** no mínimo:
 ## ✅ RESUMO EXECUTIVO
 
 **O PROBLEMA:**
+
 - ❌ Dokploy está usando Nixpacks (tem bug)
 
 **A SOLUÇÃO:**
+
 - ✅ Mudar para Dockerfile
 
 **ONDE MUDAR:**
+
 - Dokploy → Seu App → Settings → General → Builder → **"Dockerfile"**
 
 **O QUE DIGITAR:**
+
 - Dockerfile Path: `Dockerfile.dokploy`
 
 **DEPOIS:**
+
 - Adicionar variáveis de ambiente
 - Click "Redeploy"
 - ✅ **Vai funcionar!**
@@ -322,6 +346,7 @@ https://sua-url.com
 ```
 
 **Swagger disponível em:**
+
 ```
 https://sua-url.com/swagger/index.html
 ```
@@ -329,9 +354,9 @@ https://sua-url.com/swagger/index.html
 ---
 
 **Qualquer dúvida, consulte:**
+
 - `DOKPLOY_FIX.md` - Troubleshooting detalhado
 - `SOLUCAO_DOKPLOY.md` - Guia visual
 - `Dockerfile.dokploy` - O arquivo que será usado
 
 **BOA SORTE! 🚀**
-

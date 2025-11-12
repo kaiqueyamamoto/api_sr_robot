@@ -3,6 +3,7 @@
 ## 🔴 PROBLEMA IDENTIFICADO
 
 Você está vendo este erro:
+
 ```
 Error: Writing app
 Caused by: Is a directory (os error 21)
@@ -180,6 +181,7 @@ Menu Lateral → Environment (ou Settings → Environment)
 ```
 
 **Como adicionar:**
+
 1. Click em **"Add Variable"** ou **"+"**
 2. Digite o **Nome** (ex: `MONGODB_URL`)
 3. Digite o **Valor** (ex: `mongodb+srv://...`)
@@ -280,6 +282,7 @@ https://sua-url.com/health
 ```
 
 **Resposta esperada:**
+
 ```json
 {
   "status": "ok",
@@ -288,9 +291,11 @@ https://sua-url.com/health
 ```
 
 **Swagger UI:**
+
 ```
 https://sua-url.com/
 ```
+
 (Redireciona automaticamente para `/swagger/index.html`)
 
 ---
@@ -304,13 +309,15 @@ App → Logs → Build Logs
 ```
 
 Procure por linhas com:
+
 - ❌ "Error"
 - ❌ "Failed"
-- ⚠️  "Warning"
+- ⚠️ "Warning"
 
 ### 2. Verificar Dockerfile
 
 No seu repositório GitHub, confirme que existe:
+
 ```
 Dockerfile.dokploy
 ```
@@ -347,4 +354,3 @@ Settings → Advanced → Clear Build Cache → Rebuild
 **BOA SORTE! 🎉**
 
 Se seguir exatamente estes passos, VAI FUNCIONAR! ✅
-

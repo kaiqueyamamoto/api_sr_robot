@@ -8,6 +8,7 @@ cmds = ["go mod download"]
 
 [phases.build]
 cmds = [
+  "rm -f chatserver",
   "go install github.com/swaggo/swag/cmd/swag@latest",
   "~/go/bin/swag init -g main.go --output ./docs || swag init -g main.go --output ./docs || echo 'Swagger generation skipped'",
   "go build -o chatserver main.go"
@@ -15,4 +16,3 @@ cmds = [
 
 [start]
 cmd = "./chatserver"
-
