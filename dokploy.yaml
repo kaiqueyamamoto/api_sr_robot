@@ -1,0 +1,16 @@
+version: '1'
+
+build:
+  context: .
+  dockerfile: Dockerfile
+
+deploy:
+  port: 8080
+  
+env:
+  - MONGODB_URL
+  - MONGODB_DATABASE
+  - JWT_SECRET
+  - N8N_WEBHOOK_URL
+  - PORT=8080
+  - ENV=production
