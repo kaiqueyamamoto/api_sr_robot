@@ -1,0 +1,70 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║               ⚠️  AÇÃO NECESSÁRIA NO DOKPLOY  ⚠️              ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+O código está PRONTO! ✅
+
+Mas você precisa fazer UMA MUDANÇA no Dokploy:
+
+┌───────────────────────────────────────────────────────────────┐
+│                                                               │
+│  NO PAINEL DO DOKPLOY:                                        │
+│                                                               │
+│  1. Abra seu app: srrobot-api-ejhf6d                          │
+│  2. Vá em: Settings → General                                 │
+│  3. Procure por: "Builder"                                    │
+│  4. Mude de "Nixpacks" para "Dockerfile"                      │
+│  5. Em "Dockerfile Path", digite: Dockerfile.dokploy          │
+│  6. Salve                                                     │
+│  7. Click em "Redeploy"                                       │
+│                                                               │
+└───────────────────────────────────────────────────────────────┘
+
+POR QUE ISSO É NECESSÁRIO:
+
+❌ Nixpacks tem um bug que causa o erro:
+   "Error: Writing app - Is a directory (os error 21)"
+
+✅ Dockerfile não tem esse problema e funciona perfeitamente!
+
+═══════════════════════════════════════════════════════════════
+
+📖 GUIA COMPLETO:
+   → Leia: DEPLOY_DOKPLOY_PASSO_A_PASSO.md
+
+🆘 TROUBLESHOOTING:
+   → Leia: DOKPLOY_FIX.md
+
+💡 SOLUÇÃO RÁPIDA:
+   → Leia: SOLUCAO_DOKPLOY.md
+
+═══════════════════════════════════════════════════════════════
+
+VARIÁVEIS DE AMBIENTE (Configure no Dokploy também!):
+
+MONGODB_URL=mongodb+srv://sr_robot:brBBTUbOqnxVpN0S@conecta-tech.pajxycn.mongodb.net/
+MONGODB_DATABASE=sr_robot
+PORT=8080
+ENV=production
+GIN_MODE=release
+JWT_SECRET=seu_secret_aqui
+
+═══════════════════════════════════════════════════════════════
+
+APÓS O DEPLOY BEM-SUCEDIDO:
+
+✅ Acesse: https://sua-url.com/
+   (Redireciona automaticamente para o Swagger)
+
+✅ Health Check: https://sua-url.com/health
+
+✅ Swagger UI: https://sua-url.com/swagger/index.html
+
+═══════════════════════════════════════════════════════════════
+
+TEMPO ESTIMADO: 5 minutos
+
+BOA SORTE! 🚀
+

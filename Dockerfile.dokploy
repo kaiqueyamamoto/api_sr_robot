@@ -16,8 +16,8 @@ COPY . .
 # Install swag and generate docs
 RUN go install github.com/swaggo/swag/cmd/swag@latest
 RUN ~/go/bin/swag init -g main.go --output ./docs || \
-    /go/bin/swag init -g main.go --output ./docs || \
-    echo "Swagger generation skipped"
+  /go/bin/swag init -g main.go --output ./docs || \
+  echo "Swagger generation skipped"
 
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o chatserver main.go

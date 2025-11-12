@@ -34,11 +34,13 @@ No painel do Dokploy:
 No painel do Dokploy, configure manualmente:
 
 **Build Command:**
+
 ```bash
 go mod download && go install github.com/swaggo/swag/cmd/swag@latest && /root/go/bin/swag init -g main.go --output ./docs || mkdir -p docs && go build -o chatserver main.go
 ```
 
 **Start Command:**
+
 ```bash
 ./chatserver
 ```
@@ -50,12 +52,14 @@ go mod download && go install github.com/swaggo/swag/cmd/swag@latest && /root/go
 ### **Solução 3: Usar build.sh (Script)**
 
 1. **Renomear configuração:**
+
 ```bash
 mv nixpacks.toml nixpacks-backup.toml
 mv nixpacks-simple.toml nixpacks.toml
 ```
 
 2. **Commit:**
+
 ```bash
 git add .
 git commit -m "fix: use build script for Dokploy"
@@ -81,6 +85,7 @@ git push origin main
 #### 2. Configurar Variáveis
 
 **Environment Variables:**
+
 ```
 MONGODB_URL=mongodb+srv://sr_robot:brBBTUbOqnxVpN0S@conecta-tech.pajxycn.mongodb.net/
 MONGODB_DATABASE=sr_robot
@@ -101,19 +106,19 @@ GIN_MODE=release
 ✅ Multi-stage build (imagem menor)  
 ✅ Sem dependência de paths específicos  
 ✅ Funciona em qualquer plataforma  
-✅ Mais confiável  
+✅ Mais confiável
 
 ---
 
 ## 📝 Arquivos Disponíveis
 
-| Arquivo | Uso |
-|---------|-----|
-| **Dockerfile.dokploy** | ✅ RECOMENDADO para Dokploy |
-| **nixpacks.toml** | Versão simplificada |
-| **nixpacks-simple.toml** | Com build.sh |
-| **build.sh** | Script de build standalone |
-| **Dockerfile** | Docker padrão |
+| Arquivo                  | Uso                         |
+| ------------------------ | --------------------------- |
+| **Dockerfile.dokploy**   | ✅ RECOMENDADO para Dokploy |
+| **nixpacks.toml**        | Versão simplificada         |
+| **nixpacks-simple.toml** | Com build.sh                |
+| **build.sh**             | Script de build standalone  |
+| **Dockerfile**           | Docker padrão               |
 
 ---
 
@@ -175,6 +180,7 @@ curl http://localhost:8080/health
 ```
 
 Então você verá nos logs:
+
 ```
 ✅ Conectado ao MongoDB Atlas!
 🚀 Servidor rodando na porta 8080
@@ -193,4 +199,3 @@ Então você verá nos logs:
 4. ✅ Funciona!
 
 É a solução mais confiável e compatível! 🚀
-
