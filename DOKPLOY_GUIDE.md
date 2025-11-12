@@ -30,11 +30,13 @@ GIN_MODE=release
 **Builder:** Nixpacks
 
 **Build Command:** (opcional, já está no nixpacks.toml)
+
 ```bash
 swag init -g main.go --output ./docs && go build -o chatserver main.go
 ```
 
 **Start Command:**
+
 ```bash
 ./chatserver
 ```
@@ -42,6 +44,7 @@ swag init -g main.go --output ./docs && go build -o chatserver main.go
 ### 3. Health Check
 
 Configure o health check:
+
 - **Path:** `/health`
 - **Interval:** 30s
 - **Timeout:** 10s
@@ -79,6 +82,7 @@ Se o TOML não funcionar, o Dokploy usará o JSON automaticamente.
 ### Erro: "Is a directory (os error 21)"
 
 **Solução aplicada:**
+
 - ✅ Removido arquivo `.nixpacks` conflitante
 - ✅ Simplificado `nixpacks.toml`
 - ✅ Adicionado `.dockerignore`
@@ -86,6 +90,7 @@ Se o TOML não funcionar, o Dokploy usará o JSON automaticamente.
 ### Erro: "swag: command not found"
 
 **Solução:**
+
 ```bash
 # O swag é instalado em $GOPATH/bin
 # Use: $GOPATH/bin/swag ou apenas swag se PATH estiver correto
@@ -94,6 +99,7 @@ Se o TOML não funcionar, o Dokploy usará o JSON automaticamente.
 ### Erro: "MongoDB connection failed"
 
 **Verificar:**
+
 1. MONGODB_URL está correto
 2. IP do Dokploy está na whitelist do MongoDB Atlas
 3. Credenciais estão corretas
@@ -101,6 +107,7 @@ Se o TOML não funcionar, o Dokploy usará o JSON automaticamente.
 ### Build muito lento
 
 **Otimizar:**
+
 ```toml
 # Adicionar ao nixpacks.toml
 [variables]
@@ -145,6 +152,7 @@ curl -X POST https://seu-app.dokploy.com/api/v1/chat \
 ### Ver Logs em Tempo Real
 
 No painel do Dokploy:
+
 1. Click no seu aplicativo
 2. Aba "Logs"
 3. Selecione "Real-time logs"
@@ -198,6 +206,7 @@ Após o deploy bem-sucedido, você deverá ver:
 ## 🎉 Deploy Bem-Sucedido!
 
 Após o deploy:
+
 - ✅ API estará disponível na URL do Dokploy
 - ✅ Swagger em `/` ou `/swagger/index.html`
 - ✅ Health check em `/health`
@@ -216,6 +225,7 @@ Se o erro persistir:
 1. Verifique os logs no Dokploy
 2. Confirme que todas as variáveis de ambiente estão corretas
 3. Teste o build localmente:
+
 ```bash
 docker build -t test .
 docker run -p 8080:8080 test
@@ -224,4 +234,3 @@ docker run -p 8080:8080 test
 ---
 
 **Status:** ✅ Configuração corrigida - Pronto para redeploy!
-

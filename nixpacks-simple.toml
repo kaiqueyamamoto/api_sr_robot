@@ -1,0 +1,14 @@
+# Simplified Nixpacks Configuration for Dokploy
+
+[phases.setup]
+nixPkgs = ["go_1_24"]
+
+[phases.install]
+cmds = ["go mod download"]
+
+[phases.build]
+cmds = ["chmod +x build.sh && ./build.sh"]
+
+[start]
+cmd = "./chatserver"
+

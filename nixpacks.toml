@@ -1,25 +1,18 @@
 # Nixpacks Configuration for SR Robot API
-# https://nixpacks.com/docs/configuration
 
 [phases.setup]
 nixPkgs = ["go_1_24"]
 
 [phases.install]
-cmds = [
-  "go mod download",
-  "go install github.com/swaggo/swag/cmd/swag@latest"
-]
+cmds = ["go mod download"]
 
 [phases.build]
 cmds = [
-  "$GOPATH/bin/swag init -g main.go --output ./docs",
+  "go install github.com/swaggo/swag/cmd/swag@latest",
+  "~/go/bin/swag init -g main.go --output ./docs || swag init -g main.go --output ./docs || echo 'Swagger generation skipped'",
   "go build -o chatserver main.go"
 ]
 
 [start]
 cmd = "./chatserver"
-
-[variables]
-GO_ENV = "production"
-GIN_MODE = "release"
 
