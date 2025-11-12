@@ -105,11 +105,13 @@ Após selecionar "Dockerfile", aparece:
 ```
 
 **Digite exatamente:**
+
 ```
 Dockerfile.dokploy
 ```
 
 **Resultado:**
+
 ```
 ┌─────────────────────────────────────┐
 │  Dockerfile Path:                   │
@@ -339,6 +341,7 @@ Collection: users
 ### Erro 2: "Build failed"
 
 **Solução:**
+
 1. Veja os logs detalhados
 2. Verifique se as variáveis de ambiente estão configuradas
 3. Tente "Clear Build Cache" → Rebuild
@@ -346,6 +349,7 @@ Collection: users
 ### Erro 3: "Container crashed"
 
 **Solução:**
+
 1. Verifique `MONGODB_URL` (deve ter senha correta)
 2. Verifique logs: Settings → Logs → Runtime Logs
 3. Procure por erros de conexão
@@ -355,12 +359,14 @@ Collection: users
 ## 💯 GARANTIA
 
 Com Dockerfile:
+
 - ✅ **Funciona 100%** (confirmado pela pesquisa web)
 - ✅ Usado em produção por milhares de empresas
 - ✅ Sem bugs conhecidos
 - ✅ Suporte completo do Dokploy
 
 Com Nixpacks:
+
 - ❌ Bug na versão 1.39.0
 - ❌ Não funciona com Go
 - ❌ "os error 21" sem solução
@@ -386,8 +392,8 @@ Confie no processo! Milhares de apps usam Dockerfile no Dokploy com sucesso.
 ---
 
 **Qualquer dúvida:**
+
 - Consulte: `ONDE_MUDAR_NO_DOKPLOY.md`
 - Ou: `DEPLOY_DOKPLOY_PASSO_A_PASSO.md`
 
 **BOA SORTE! Vai dar certo! ✅**
-
