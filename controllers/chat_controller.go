@@ -92,6 +92,13 @@ func (ctrl *ChatController) SendMessage(c *gin.Context) {
 		return
 	}
 
+	// Obter user_id do contexto (setado pelo middleware de autenticação)
+	userID, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Usuário não autenticado"})
+		return
+	}
+
 	ctx := context.Background()
 	startTime := time.Now()
 
@@ -106,23 +113,30 @@ func (ctrl *ChatController) SendMessage(c *gin.Context) {
 			return
 		}
 
-		// Verificar se a conversa existe
+		// Verificar se a conversa existe E pertence ao usuário
 		var conversation models.Conversation
-		err = ctrl.conversationsCollection.FindOne(ctx, bson.M{"_id": conversationID}).Decode(&conversation)
+		err = ctrl.conversationsCollection.FindOne(ctx, bson.M{
+			"_id":    conversationID,
+			"userId": userID.(string), // Filtrar por userId
+		}).Decode(&conversation)
 		if err != nil {
-			c.JSON(http.StatusNotFound, gin.H{"error": "Conversa não encontrada"})
+			if err == mongo.ErrNoDocuments {
+				c.JSON(http.StatusForbidden, gin.H{"error": "Conversa não encontrada ou acesso negado"})
+			} else {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao buscar conversa"})
+			}
 			return
 		}
 
 		// Atualizar updatedAt
 		ctrl.conversationsCollection.UpdateOne(
 			ctx,
-			bson.M{"_id": conversationID},
+			bson.M{"_id": conversationID, "userId": userID.(string)},
 			bson.M{"$set": bson.M{"updatedAt": time.Now()}},
 		)
 	} else {
-		// Criar nova conversa
-		conversation := models.NewConversation("")
+		// Criar nova conversa com o userId do usuário autenticado
+		conversation := models.NewConversation(userID.(string))
 		result, err := ctrl.conversationsCollection.InsertOne(ctx, conversation)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao criar conversa"})
@@ -206,13 +220,27 @@ func (ctrl *ChatController) GetConversationHistory(c *gin.Context) {
 		return
 	}
 
+	// Obter user_id do contexto
+	userID, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Usuário não autenticado"})
+		return
+	}
+
 	ctx := context.Background()
 
-	// Verificar se a conversa existe
+	// Verificar se a conversa existe E pertence ao usuário
 	var conversation models.Conversation
-	err = ctrl.conversationsCollection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&conversation)
+	err = ctrl.conversationsCollection.FindOne(ctx, bson.M{
+		"_id":    objectID,
+		"userId": userID.(string),
+	}).Decode(&conversation)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Conversa não encontrada"})
+		if err == mongo.ErrNoDocuments {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Conversa não encontrada ou acesso negado"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao buscar conversa"})
+		}
 		return
 	}
 
@@ -239,12 +267,20 @@ func (ctrl *ChatController) GetConversationHistory(c *gin.Context) {
 // @Failure      500  {object}  map[string]string
 // @Router       /api/v1/conversations [get]
 func (ctrl *ChatController) ListConversations(c *gin.Context) {
+	// Obter user_id do contexto
+	userID, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Usuário não autenticado"})
+		return
+	}
+
 	ctx := context.Background()
 
 	// Ordenar por updatedAt descendente (mais recentes primeiro)
 	findOptions := options.Find().SetSort(bson.D{{Key: "updatedAt", Value: -1}})
 
-	cursor, err := ctrl.conversationsCollection.Find(ctx, bson.M{}, findOptions)
+	// Filtrar APENAS conversas do usuário autenticado
+	cursor, err := ctrl.conversationsCollection.Find(ctx, bson.M{"userId": userID.(string)}, findOptions)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao buscar conversas"})
 		return
@@ -285,6 +321,13 @@ func (ctrl *ChatController) UpdateConversationTitle(c *gin.Context) {
 		return
 	}
 
+	// Obter user_id do contexto
+	userID, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Usuário não autenticado"})
+		return
+	}
+
 	var request struct {
 		Title string `json:"title" binding:"required"`
 	}
@@ -296,7 +339,7 @@ func (ctrl *ChatController) UpdateConversationTitle(c *gin.Context) {
 
 	ctx := context.Background()
 
-	// Atualizar o título
+	// Atualizar o título APENAS se a conversa pertence ao usuário
 	update := bson.M{
 		"$set": bson.M{
 			"title":     request.Title,
@@ -306,14 +349,14 @@ func (ctrl *ChatController) UpdateConversationTitle(c *gin.Context) {
 
 	result := ctrl.conversationsCollection.FindOneAndUpdate(
 		ctx,
-		bson.M{"_id": objectID},
+		bson.M{"_id": objectID, "userId": userID.(string)}, // Filtrar por userId
 		update,
 		options.FindOneAndUpdate().SetReturnDocument(options.After),
 	)
 
 	if result.Err() != nil {
 		if result.Err() == mongo.ErrNoDocuments {
-			c.JSON(http.StatusNotFound, gin.H{"error": "Conversa não encontrada"})
+			c.JSON(http.StatusForbidden, gin.H{"error": "Conversa não encontrada ou acesso negado"})
 			return
 		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao atualizar conversa"})
@@ -350,14 +393,24 @@ func (ctrl *ChatController) DeleteConversation(c *gin.Context) {
 		return
 	}
 
+	// Obter user_id do contexto
+	userID, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Usuário não autenticado"})
+		return
+	}
+
 	ctx := context.Background()
 
-	// Verificar se a conversa existe
+	// Verificar se a conversa existe E pertence ao usuário
 	var conversation models.Conversation
-	err = ctrl.conversationsCollection.FindOne(ctx, bson.M{"_id": objectID}).Decode(&conversation)
+	err = ctrl.conversationsCollection.FindOne(ctx, bson.M{
+		"_id":    objectID,
+		"userId": userID.(string),
+	}).Decode(&conversation)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			c.JSON(http.StatusNotFound, gin.H{"error": "Conversa não encontrada"})
+			c.JSON(http.StatusForbidden, gin.H{"error": "Conversa não encontrada ou acesso negado"})
 			return
 		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao buscar conversa"})
@@ -372,7 +425,7 @@ func (ctrl *ChatController) DeleteConversation(c *gin.Context) {
 	}
 
 	// Deletar a conversa
-	_, err = ctrl.conversationsCollection.DeleteOne(ctx, bson.M{"_id": objectID})
+	_, err = ctrl.conversationsCollection.DeleteOne(ctx, bson.M{"_id": objectID, "userId": userID.(string)})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao deletar conversa"})
 		return

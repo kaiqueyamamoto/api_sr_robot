@@ -112,8 +112,9 @@ func main() {
 		profile.PUT("", profileController.UpdateProfile)
 	}
 
-	// Rotas da API
+	// Rotas da API (protegidas com autenticação)
 	api := router.Group("/api/v1")
+	api.Use(middleware.AuthMiddleware()) // TODAS as rotas de chat precisam de autenticação
 	{
 		// Chat routes
 		chatController := controllers.NewChatController()
